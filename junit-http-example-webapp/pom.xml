@@ -36,7 +36,7 @@
         </dependency>
         <dependency>
             <groupId>co.cantina</groupId>
-            <artifactId>junit-http-example-app</artifactId>
+            <artifactId>junit-http-example-adapter</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

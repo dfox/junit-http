@@ -1,0 +1,16 @@
+{
+    "save": {
+        "name": "save-note",
+        "contents": "This is my saved note"
+    },
+    
+    "load": {
+        "name": "load-note",
+        "contents": "This is my loaded note"
+    },
+    
+    "fixture": {
+        "name": "fixture-note",
+        "contents": "This is my fixture note"
+    }
+}

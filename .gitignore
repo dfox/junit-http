@@ -1,0 +1,22 @@
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+/target/
+/junit-http/target/
+/junit-http-example-tests/target/
+/junit-http-war/target/
+/junit-http-deployedls/target/
+/junit-http-example-app/target/
+/junit-http-example-libs/target/
+/junit-http-example-webapp/target/
+/junit-http-webapp/target/
+/junit-http-example-adapter/target/

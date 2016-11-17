@@ -16,7 +16,7 @@
 package co.cantina.junit.http.api;
 
 /**
- * RunResult is the interface all results in a {@link co.cantina.junit.http.api.TestRun} must 
+ * Result is the interface all results in a {@link co.cantina.junit.http.api.Summary} must 
  * implement.
  */
 public interface Result {

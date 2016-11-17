@@ -18,7 +18,7 @@ package co.cantina.junit.http.api;
 import com.google.common.collect.ImmutableList;
 
 /**
- * RunSummary represents a full test run. Depending on the {@link co.cantina.junit.http.api.TestPath},
+ * Summary represents a full test run. Depending on the {@link co.cantina.junit.http.api.Path},
  * this could represent one or more tests. 
  */
 public class Summary {

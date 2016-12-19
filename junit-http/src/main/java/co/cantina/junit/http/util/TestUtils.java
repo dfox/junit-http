@@ -6,7 +6,7 @@
  * You may obtain a copy of the License at
  *
  *    http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,40 +28,40 @@ import java.util.Arrays;
  * internally by the JUnit HTTP application.
  */
 public class TestUtils {
-    
+
     /**
      * The directory fixtures should be contained in.
      */
     public static final String DATA_DIR = "/test-data";
-    
+
     /**
      * The ObjectMapper used by the system.
      */
-    public static final ObjectMapper JSON_MAPPER = 
+    public static final ObjectMapper JSON_MAPPER =
         new ObjectMapper().registerModule(new Jdk8Module());
-    
+
     /**
      * TestUtils cannot be instantiated.
      */
     private TestUtils() { }
-    
+
     /**
-     * Convert the array of StackTraceElements to a list of Strings.
-     * 
-     * @param stackTrace The stacktrace to convert
-     * @return The stacktrace as a list of Strings
+     * Convert the array of objects to a list of Strings by calling toString() on each.
+     *
+     * @param objects The objects to convert
+     * @return The an array of strings
      */
-    public static ImmutableList<String> toStringList(final StackTraceElement[] stackTrace) {
-        return Arrays.stream(stackTrace)
+    public static ImmutableList<String> toStringList(final Object[] objects) {
+        return Arrays.stream(objects)
             .map(e -> e.toString())
             .collect(Collectors.toImmutableList());
     }
-    
+
     /**
-     * Get the fixture with the specified path or null if not found. The fixture must be a valid 
-     * JSON file available on the classpath in a resource directory called "fixtures". It may be 
+     * Get the fixture with the specified path or null if not found. The fixture must be a valid
+     * JSON file available on the classpath in a resource directory called "fixtures". It may be
      * contained in a further directory structure under that directory.
-     * 
+     *
      * @param path The path to the fixture
      * @return The fixture as a parsed JsonNode
      * @throws IOException If the fixture cannot be loaded.

@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.BiFunction;
 import org.junit.runners.model.InitializationError;
 
 /**
@@ -37,13 +36,30 @@ public class JUnitHttpApplication {
     private final Map<String, JUnitHttpRunner> runners = new HashMap<>();
 
     /**
+     * Small interface for DI in running the tests.
+     */
+    private interface TestRunner {
+
+        /**
+         * Execute the appropriate method on the specified runner.
+         *
+         * @param runner The runner
+         * @param path The path to use
+         * @return The Summary of the test run
+         */
+        Summary run(JUnitHttpRunner runner, Path path);
+    }
+
+    /**
      * Run the {@link co.cantina.junit.http.JUnitHttpRunner#invokeAfterClassMethods() } for every
      * cached runner.
      *
      * @throws RunnerException If any of the test's @AfterClass methods throws an exception
      */
     public void destroy() throws RunnerException {
-        runners.values().stream().forEach(JUnitHttpRunner::invokeAfterClassMethods);
+        for (JUnitHttpRunner runner : runners.values()) {
+            runner.invokeAfterClassMethods();
+        }
     }
 
     /**
@@ -100,11 +116,11 @@ public class JUnitHttpApplication {
      * Run the specified function using the context created by the specified path.
      *
      * @param path The path to the function
-     * @param func The function to execute using the runner and parsed path
+     * @param testRunner The instance to execute the runner function in using the parsed path
      * @return The runner Summary
      * @throws InvalidPathException If the path is invalid
      */
-    public Summary run(final String path, final BiFunction<JUnitHttpRunner, Path, Summary> func)
+    public Summary run(final String path, final TestRunner testRunner)
         throws InvalidPathException {
 
         final Optional<Path> maybePath = Path.parse(path);
@@ -112,7 +128,7 @@ public class JUnitHttpApplication {
         if (maybePath.isPresent()) {
             Path testPath = maybePath.get();
             final JUnitHttpRunner runner = getRunner(testPath);
-            return func.apply(runner, testPath);
+            return testRunner.run(runner, testPath);
         }
         else {
             throw new InvalidPathException(path);
@@ -129,7 +145,12 @@ public class JUnitHttpApplication {
      * @throws InvalidPathException If the path is not valid
      */
     public Summary runFixture(final String path) throws InvalidPathException {
-        return run(path, (runner, testPath) -> runner.runFixture(testPath));
+        return run(path, new TestRunner() {
+            @Override
+            public Summary run(final JUnitHttpRunner runner, final Path testPath) {
+                return runner.runFixture(testPath);
+            }
+        });
     }
 
     /**
@@ -142,6 +163,11 @@ public class JUnitHttpApplication {
      * @throws InvalidPathException If the path is not valid
      */
     public Summary runTest(final String path) throws InvalidPathException {
-        return run(path, (runner, testPath) -> runner.runTests(testPath));
+        return run(path, new TestRunner() {
+            @Override
+            public Summary run(final JUnitHttpRunner runner, final Path testPath) {
+                return runner.runTests(testPath);
+            }
+        });
     }
 }

@@ -6,7 +6,7 @@
  * You may obtain a copy of the License at
  *
  *    http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,57 +40,57 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class JUnitHttpApplicationTest {
-    
+
     private JUnitHttpApplication application = new JUnitHttpApplication();
-    
+
     @Before
     public void setUp() {
         application = new JUnitHttpApplication();
     }
-    
+
     @After
     public void tearDown() {
         application.destroy();
         application = null;
     }
-    
+
     @Test
     public void runsSingleTest() {
         String path = ExampleTest.class.getName() + "/successfulTest";
         Summary testRun = application.runTest(path);
-        
+
         assertTrue(testRun.isSuccessful());
         assertEquals(1, testRun.getResults().size());
         Result success = testRun.getResults().get(0);
-        
+
         assertTrue(success instanceof Success);
         assertSuccessfulTestResult((Success) success);
     }
-    
+
     public void assertSuccessfulTestResult(final Success success) {
         assertEquals(ExampleTest.class.getName(), success.getGrouping());
         assertEquals("successfulTest", success.getName());
         assertEquals("success", success.getType());
     }
-    
+
     public void assertFixtureWasRun(final Success success) {
         assertEquals(ExampleTest.class.getName(), success.getGrouping());
         assertEquals("fixtureWasRun", success.getName());
         assertEquals("success", success.getType());
     }
-    
+
     public void assertClassValueWasSetUp(final Success success) {
         assertEquals(ExampleTest.class.getName(), success.getGrouping());
         assertEquals("classValueWasSetUp", success.getName());
         assertEquals("success", success.getType());
     }
-    
+
     public void assertIgnoredTestResult(final Ignored ignored) {
         assertEquals(ExampleTest.class.getName(), ignored.getGrouping());
         assertEquals("ignoredTest", ignored.getName());
         assertEquals("ignored", ignored.getType());
     }
-    
+
     public void assertFailedAssertionNoMessage(final Failure failure) {
         assertEquals(ExampleTest.class.getName(), failure.getGrouping());
         assertEquals("failedAssertionNoMessage", failure.getName());
@@ -98,7 +98,7 @@ public class JUnitHttpApplicationTest {
         assertEquals("java.lang.AssertionError", failure.getError().getName());
         assertFalse(failure.getError().getMessage().isPresent());
     }
-    
+
     public void assertFailedAssertion(final Failure failure) {
         assertEquals(ExampleTest.class.getName(), failure.getGrouping());
         assertEquals("failedAssertion", failure.getName());
@@ -107,7 +107,7 @@ public class JUnitHttpApplicationTest {
         assertTrue(failure.getError().getMessage().isPresent());
         assertEquals("Assertion must be false", failure.getError().getMessage().get());
     }
-    
+
     public void assertException(final Failure failure) {
         assertEquals(ExampleTest.class.getName(), failure.getGrouping());
         assertEquals("exceptionTest", failure.getName());
@@ -118,24 +118,24 @@ public class JUnitHttpApplicationTest {
         assertTrue(failure.getTrace().size() > 0);
         assertEquals("BOOM!", failure.getError().getMessage().get());
     }
-    
+
     @Test
     public void runsFixtureAndAllTestsInTestClass() {
-        
+
         Summary fixtureRun = application.runFixture(ExampleTest.class.getName() + "/someFixture");
-        
+
         assertTrue(fixtureRun.isSuccessful());
         assertEquals(1, fixtureRun.getResults().size());
         assertEquals(ExampleTest.class.getName(), fixtureRun.getResults().get(0).getGrouping());
         assertEquals("someFixture", fixtureRun.getResults().get(0).getName());
         assertEquals("success", fixtureRun.getResults().get(0).getType());
-        
+
         Summary testRun = application.runTest(ExampleTest.class.getName());
-        
+
         assertFalse(testRun.isSuccessful());
         assertEquals(7, testRun.getResults().size());
-        
-        testRun.getResults().stream().forEach(result -> {
+
+        for (Result result : testRun.getResults()) {
             switch (result.getName()) {
                 case "successfulTest":
                     assertSuccessfulTestResult((Success) result);
@@ -152,16 +152,16 @@ public class JUnitHttpApplicationTest {
                 case "exceptionTest":
                     assertException((Failure) result);
                     break;
-                case "classValueWasSetUp" : 
+                case "classValueWasSetUp" :
                     assertClassValueWasSetUp((Success) result);
                     break;
-                case "fixtureWasRun" : 
+                case "fixtureWasRun" :
                     assertFixtureWasRun((Success) result);
                     break;
                 default:
                     fail("Unexpected test: " + result.getName());
             }
-        });
+        }
     }
 
     @Test
@@ -169,10 +169,10 @@ public class JUnitHttpApplicationTest {
         Path path = new Path(ExampleTest.class.getName());
         JUnitHttpRunner runnerA = application.getRunner(path);
         JUnitHttpRunner runnerB = application.getRunner(path);
-        
+
         assertSame(runnerA, runnerB);
     }
-    
+
     @Test
     public void invalidTestPathExceptionWhenInvalidPath() {
         String path = "/some/invalid/path";
@@ -184,12 +184,12 @@ public class JUnitHttpApplicationTest {
             assertEquals(path, e.getPath());
         }
     }
-    
+
     @Test(expected = MethodNotFoundException.class)
     public void testNotFoundExceptionWhenMissingClass() {
         application.runTest("some.non.existant.class.Name");
     }
-    
+
     @Test
     public void testNotFoundExceptionWhenMissingMethod() {
         String path = ExampleTest.class.getName() + "/nonExistentMethod";
@@ -201,21 +201,21 @@ public class JUnitHttpApplicationTest {
             assertEquals(Path.parse(path).get(), e.getTestPath());
         }
     }
-    
+
     @Test(expected = RunnerException.class)
     public void testRunnerExceptionWhenNonTestClass() {
         application.runTest(ExampleNonTest.class.getName());
     }
-    
+
     @Test(expected = RunnerException.class)
     public void testRunnerExceptionWhenBadBeforeClass() {
         application.runTest(ExampleTestWithBadBeforeClass.class.getName());
     }
-    
+
     @Test
     public void fixtureLoadsAndParses() throws IOException {
         JsonNode fixture = application.getData("notes.json");
-        
+
         assertNotNull(fixture);
         assertEquals("my-note", fixture.path("name").asText());
         assertEquals("This is my note", fixture.path("contents").asText());

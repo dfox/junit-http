@@ -21,7 +21,6 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.google.common.collect.ImmutableList;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 
 /**
  * TestUtils provides a set of utility methods which can be used in tests. They are also used
@@ -52,9 +51,16 @@ public class TestUtils {
      * @return The an array of strings
      */
     public static ImmutableList<String> toStringList(final Object[] objects) {
-        return Arrays.stream(objects)
-            .map(e -> e.toString())
-            .collect(Collectors.toImmutableList());
+        ImmutableList.Builder<String> strings = ImmutableList.builder();
+        for (Object object : objects) {
+            if (object == null) {
+                strings.add("null");
+            }
+            else {
+                strings.add(object.toString());
+            }
+        }
+        return strings.build();
     }
 
     /**

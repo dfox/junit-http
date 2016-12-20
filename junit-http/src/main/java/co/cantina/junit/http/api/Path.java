@@ -6,7 +6,7 @@
  * You may obtain a copy of the License at
  *
  *    http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,74 +15,78 @@
  */
 package co.cantina.junit.http.api;
 
-import co.cantina.junit.http.util.Collectors;
 import com.google.common.collect.ImmutableList;
-import java.util.Arrays;
 import java.util.Optional;
-import org.apache.commons.lang.StringUtils;
+import static org.apache.commons.lang.StringUtils.stripToNull;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
- * RunPath encapsulates the path to a test. For JUnit tests, the grouping is the full canonical 
+ * RunPath encapsulates the path to a test. For JUnit tests, the grouping is the full canonical
  * name of the test class, and the name is the test method. If name is empty, the path represents
  * all tests in the test class.
  */
 public class Path {
-    
+
     private final String grouping;
-    private final Optional<String> name;
-    
+    private final String name;
+
+
     /**
-     * Create a TestPath. If name is all whitespace, empty, or null, an empty Optional will be used.
-     * 
+     * Create a TestPath with an empty name.
+     *
+     * @param grouping The group the test belongs to. For JUnit tests, this is the test class name.
+     */
+    public Path(final String grouping) {
+        this(grouping, null);
+    }
+
+    /**
      * @param grouping The group the test belongs to. For JUnit tests, this is the test class name.
      * @param name The name of the test. For JUnit tests, this is the test method name.
      */
     public Path(final String grouping, final String name) {
-        this(grouping, Optional.ofNullable(StringUtils.stripToNull(name)));
-    }
-
-    /**
-     * Create a TestPath with an empty name.
-     * 
-     * @param grouping The group the test belongs to. For JUnit tests, this is the test class name.
-     */
-    public Path(final String grouping) {
-        this(grouping, Optional.empty());
-    }
-
-    /**
-     * @param grouping The group the test belongs to. For JUnit tests, this is the test class name.
-     * @param name The name of the test. For JUnit tests, this is the test method name.
-     */
-    public Path(final String grouping, final Optional<String> name) {
         Validate.notEmpty(grouping, "grouping cannot be empty");
-        Validate.notNull(name, "name cannot be null");
-        
+
         this.grouping = grouping;
-        this.name = name;
+        this.name = stripToNull(name);
     }
-    
+
     /**
-     * Parse a String into a RunPath. The path is expected to be in the format 
+     * Split the specified path by the '/' character, then trim each split string, returning a
+     * new list containing all the strings which are non-empty.
+     *
+     * @param path The path to process
+     * @return The list of trimmed, filters strings
+     */
+    private static ImmutableList<String> splitTrimAndFilter(final String path) {
+        String[] parts = path.split("/");
+        ImmutableList.Builder<String> trimmedAndFiltered = ImmutableList.builder();
+        for (String part : parts) {
+            String trimmed = part.trim();
+            if (!trimmed.isEmpty()) {
+                trimmedAndFiltered.add(trimmed);
+            }
+        }
+        return trimmedAndFiltered.build();
+    }
+
+    /**
+     * Parse a String into a RunPath. The path is expected to be in the format
      * &lt;grouping&gt;[/&lt;name&gt;].
-     * 
+     *
      * @param path The string path
      * @return The test path or an empty Optional if the path is not valid or could not be parsed
      */
     public static Optional<Path> parse(final String path) {
-        final ImmutableList<String> parts = Arrays.stream(path.split("/"))
-            .map(s -> s.trim())
-            .filter(s -> !s.isEmpty())
-            .collect(Collectors.toImmutableList());
-        
+        final ImmutableList<String> parts = splitTrimAndFilter(path);
+
         switch (parts.size()) {
             case 1:
-                return Optional.of(new Path(parts.get(0), Optional.empty()));
+                return Optional.of(new Path(parts.get(0), null));
             case 2:
-                return Optional.of(new Path(parts.get(0), Optional.of(parts.get(1))));
+                return Optional.of(new Path(parts.get(0), parts.get(1)));
             default:
                 return Optional.empty();
         }
@@ -92,17 +96,17 @@ public class Path {
         return grouping;
     }
 
-    public Optional<String> getName() {
+    public String getName() {
         return name;
     }
-    
+
     @Override
     public boolean equals(final Object other) {
-        if (other == null) { 
-            return false; 
+        if (other == null) {
+            return false;
         }
-        else if (other == this) { 
-            return true; 
+        else if (other == this) {
+            return true;
         }
         else if (other.getClass() != getClass()) {
           return false;

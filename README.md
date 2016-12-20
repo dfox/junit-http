@@ -2,7 +2,7 @@
 A small HTTP servlet for executing JUnit tests from the web
 
 ## Why?
-When doing functional testing via the UI, it's sometimes not possible to validate side effects that occur in backend systems. This little servlet allows the UI test to make a simple HTTP request to execute a test on the backend, which has full access to the systems where the side effects are performed.
+When doing functional testing via the UI, it's sometimes not possible to validate side effects that occur in backend systems. This little servlet allows the UI test to make a simple HTTP request to execute a test on the backend, which has full access to the systems where the side effects are performed. This is often referred to as "gray box testing". 
 
 ## How?
 1. Make a WAR project

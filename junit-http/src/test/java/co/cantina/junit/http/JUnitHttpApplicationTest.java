@@ -198,7 +198,7 @@ public class JUnitHttpApplicationTest {
             fail("Test should not be found");
         }
         catch (MethodNotFoundException e) {
-            assertEquals(Path.parse(path).get(), e.getTestPath());
+            assertEquals(Path.parse(path), e.getTestPath());
         }
     }
 

@@ -16,7 +16,6 @@
 package co.cantina.junit.http.api;
 
 import com.google.common.collect.ImmutableList;
-import java.util.Optional;
 import static org.apache.commons.lang.StringUtils.stripToNull;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -79,16 +78,16 @@ public class Path {
      * @param path The string path
      * @return The test path or an empty Optional if the path is not valid or could not be parsed
      */
-    public static Optional<Path> parse(final String path) {
+    public static Path parse(final String path) {
         final ImmutableList<String> parts = splitTrimAndFilter(path);
 
         switch (parts.size()) {
             case 1:
-                return Optional.of(new Path(parts.get(0), null));
+                return new Path(parts.get(0), null);
             case 2:
-                return Optional.of(new Path(parts.get(0), parts.get(1)));
+                return new Path(parts.get(0), parts.get(1));
             default:
-                return Optional.empty();
+                return null;
         }
     }
 

@@ -25,7 +25,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import org.junit.runners.model.InitializationError;
 
 /**
@@ -123,15 +122,14 @@ public class JUnitHttpApplication {
     public Summary run(final String path, final TestRunner testRunner)
         throws InvalidPathException {
 
-        final Optional<Path> maybePath = Path.parse(path);
+        final Path maybePath = Path.parse(path);
 
-        if (maybePath.isPresent()) {
-            Path testPath = maybePath.get();
-            final JUnitHttpRunner runner = getRunner(testPath);
-            return testRunner.run(runner, testPath);
+        if (maybePath == null) {
+            throw new InvalidPathException(path);
         }
         else {
-            throw new InvalidPathException(path);
+            final JUnitHttpRunner runner = getRunner(maybePath);
+            return testRunner.run(runner, maybePath);
         }
     }
 

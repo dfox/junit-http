@@ -1,28 +1,29 @@
 package co.cantina.junit.http.api;
 
-import java.util.Optional;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class PathTest {
 
     private void assertPath(final String path, final String grouping, final String name) {
-        Optional<Path> a = Path.parse(path);
+        Path a = Path.parse(path);
 
-        assertTrue(a.isPresent());
-        assertEquals(a.get().getGrouping(), grouping);
-        assertEquals(a.get().getName(), name);
+        assertNotNull(a);
+        assertEquals(a.getGrouping(), grouping);
+        assertEquals(a.getName(), name);
     }
 
     @Test
     public void testParse() {
-        assertFalse(Path.parse("").isPresent());
-        assertFalse(Path.parse("/").isPresent());
-        assertFalse(Path.parse("//").isPresent());
-        assertFalse(Path.parse("/foo/bar/baz").isPresent());
+        assertNull(Path.parse(""));
+        assertNull(Path.parse("/"));
+        assertNull(Path.parse("//"));
+        assertNull(Path.parse("/foo/bar/baz"));
 
         assertPath("foo", "foo", null);
         assertPath("/foo", "foo", null);

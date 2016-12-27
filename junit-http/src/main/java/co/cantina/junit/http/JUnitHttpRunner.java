@@ -25,7 +25,6 @@ import static co.cantina.junit.http.util.TestUtils.toStringList;
 import com.google.common.collect.ImmutableMap;
 import java.lang.annotation.Annotation;
 import java.util.List;
-import java.util.Optional;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.notification.RunNotifier;
@@ -153,7 +152,7 @@ public class JUnitHttpRunner extends BlockJUnit4ClassRunner {
             catch (Throwable e) {
                 final Error error = new Error(
                     e.getClass().getName(),
-                    Optional.ofNullable(e.getMessage())
+                    e.getMessage()
                 );
                 builder.addResult(new Failure(
                     path.getGrouping(),

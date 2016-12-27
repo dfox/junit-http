@@ -96,7 +96,7 @@ public class JUnitHttpApplicationTest {
         assertEquals("failedAssertionNoMessage", failure.getName());
         assertEquals("failure", failure.getType());
         assertEquals("java.lang.AssertionError", failure.getError().getName());
-        assertFalse(failure.getError().getMessage().isPresent());
+        assertNotNull(failure.getError().getMessage());
     }
 
     public void assertFailedAssertion(final Failure failure) {
@@ -104,8 +104,8 @@ public class JUnitHttpApplicationTest {
         assertEquals("failedAssertion", failure.getName());
         assertEquals("failure", failure.getType());
         assertEquals("java.lang.AssertionError", failure.getError().getName());
-        assertTrue(failure.getError().getMessage().isPresent());
-        assertEquals("Assertion must be false", failure.getError().getMessage().get());
+        assertNotNull(failure.getError().getMessage());
+        assertEquals("Assertion must be false", failure.getError().getMessage());
     }
 
     public void assertException(final Failure failure) {
@@ -113,10 +113,10 @@ public class JUnitHttpApplicationTest {
         assertEquals("exceptionTest", failure.getName());
         assertEquals("failure", failure.getType());
         assertEquals("java.lang.RuntimeException", failure.getError().getName());
-        assertTrue(failure.getError().getMessage().isPresent());
+        assertNotNull(failure.getError().getMessage());
         assertNotNull(failure.getTrace());
         assertTrue(failure.getTrace().size() > 0);
-        assertEquals("BOOM!", failure.getError().getMessage().get());
+        assertEquals("BOOM!", failure.getError().getMessage());
     }
 
     @Test

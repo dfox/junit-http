@@ -6,7 +6,7 @@
  * You may obtain a copy of the License at
  *
  *    http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,7 +15,6 @@
  */
 package co.cantina.junit.http.api;
 
-import java.util.Optional;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -23,19 +22,19 @@ import org.apache.commons.lang.Validate;
  * exception which was thrown.
  */
 public class Error {
-    
+
     private final String name;
-    private final Optional<String> message;
-    
+    private final String message;
+
     /**
      * @param name The name of the error. For JUnit tests, this is the exception name.
-     * @param message The optional exception message. For JUnit tests, this is the exception 
+     * @param message The optional exception message. For JUnit tests, this is the exception
      * message.
      */
-    public Error(final String name, final Optional<String> message) {
+    public Error(final String name, final String message) {
         Validate.notEmpty(name, "name cannot be empty");
         Validate.notNull(message, "message cannot be null");
-        
+
         this.name = name;
         this.message = message;
     }
@@ -44,7 +43,7 @@ public class Error {
         return name;
     }
 
-    public Optional<String> getMessage() {
+    public String getMessage() {
         return message;
     }
 }

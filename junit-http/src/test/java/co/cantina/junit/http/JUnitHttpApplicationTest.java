@@ -35,6 +35,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -96,7 +97,7 @@ public class JUnitHttpApplicationTest {
         assertEquals("failedAssertionNoMessage", failure.getName());
         assertEquals("failure", failure.getType());
         assertEquals("java.lang.AssertionError", failure.getError().getName());
-        assertNotNull(failure.getError().getMessage());
+        assertNull(failure.getError().getMessage());
     }
 
     public void assertFailedAssertion(final Failure failure) {

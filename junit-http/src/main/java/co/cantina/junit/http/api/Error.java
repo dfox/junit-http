@@ -15,6 +15,7 @@
  */
 package co.cantina.junit.http.api;
 
+import static org.apache.commons.lang.StringUtils.stripToNull;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -33,10 +34,9 @@ public class Error {
      */
     public Error(final String name, final String message) {
         Validate.notEmpty(name, "name cannot be empty");
-        Validate.notNull(message, "message cannot be null");
 
         this.name = name;
-        this.message = message;
+        this.message = stripToNull(message);
     }
 
     public String getName() {

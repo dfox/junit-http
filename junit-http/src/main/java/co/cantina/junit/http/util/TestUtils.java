@@ -17,7 +17,6 @@ package co.cantina.junit.http.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.google.common.collect.ImmutableList;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,8 +35,7 @@ public class TestUtils {
     /**
      * The ObjectMapper used by the system.
      */
-    public static final ObjectMapper JSON_MAPPER =
-        new ObjectMapper().registerModule(new Jdk8Module());
+    public static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 
     /**
      * TestUtils cannot be instantiated.

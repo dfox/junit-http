@@ -76,7 +76,7 @@ public class Path {
      * &lt;grouping&gt;[/&lt;name&gt;].
      *
      * @param path The string path
-     * @return The test path or an empty Optional if the path is not valid or could not be parsed
+     * @return The test path or null if the path is not valid or could not be parsed
      */
     public static Path parse(final String path) {
         final ImmutableList<String> parts = splitTrimAndFilter(path);

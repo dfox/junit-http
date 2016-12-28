@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Optional;
 import org.apache.commons.io.IOUtils;
 import org.junit.AfterClass;
 import org.junit.Ignore;
@@ -29,6 +28,7 @@ import org.junit.BeforeClass;
 import static co.cantina.junit.http.util.TestUtils.getTestData;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -80,9 +80,8 @@ public class ExampleTest {
         String name = noteFixture.path("name").asText();
         String expectedContents = noteFixture.path("contents").asText();
 
-        Optional<InputStream> note = repository.getNote(name);
-        assertTrue(note.isPresent());
-        try(InputStream stream = note.get()){
+        try (InputStream stream = repository.getNote(name)){
+            assertNotNull(stream);
             String contents = IOUtils.toString(stream);
             assertEquals(expectedContents, contents);
         }

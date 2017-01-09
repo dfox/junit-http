@@ -28,7 +28,7 @@ Once both apps are running, try sending:
 
 It should return a 404. Next, try sending:
 
-```POST http://localhost:8081/tests/co.cantina.junit.http.example.ExampleTest/noteSaved HTTP/1.1``` 
+```POST http://localhost:8081/tests/io.dfox.junit.http.example.ExampleTest/noteSaved HTTP/1.1``` 
 
 It should return a 200 and something like the following response:
 
@@ -37,7 +37,7 @@ It should return a 200 and something like the following response:
   "results": [
     {
       "type": "failure",
-      "grouping": "co.cantina.junit.http.example.ExampleTest",
+      "grouping": "io.dfox.junit.http.example.ExampleTest",
       "name": "noteSaved",
       "error": {
         "name": "java.lang.AssertionError",
@@ -47,7 +47,7 @@ It should return a 200 and something like the following response:
         "org.junit.Assert.fail(Assert.java:86)",
         "org.junit.Assert.assertTrue(Assert.java:41)",
         "org.junit.Assert.assertTrue(Assert.java:52)",
-        "co.cantina.junit.http.example.ExampleTest.noteWritten(ExampleTest.java:38)",
+        "io.dfox.junit.http.example.ExampleTest.noteWritten(ExampleTest.java:38)",
         "sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)",
         "sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)",
         "sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)",
@@ -58,9 +58,9 @@ It should return a 200 and something like the following response:
         "org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)",
         "org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)",
         "org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)",
-        "co.cantina.junit.http.JunitHttpRunner.runTest(JunitHttpRunner.java:67)",
-        "co.cantina.junit.http.JunitHttpRunner.runTests(JunitHttpRunner.java:78)",
-        "co.cantina.junit.http.JUnitHttpServlet.doPost(JUnitHttpServlet.java:79)",
+        "io.dfox.junit.http.JunitHttpRunner.runTest(JunitHttpRunner.java:67)",
+        "io.dfox.junit.http.JunitHttpRunner.runTests(JunitHttpRunner.java:78)",
+        "io.dfox.junit.http.JUnitHttpServlet.doPost(JUnitHttpServlet.java:79)",
         "javax.servlet.http.HttpServlet.service(HttpServlet.java:707)",
         "javax.servlet.http.HttpServlet.service(HttpServlet.java:790)",
         "org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:830)",
@@ -108,7 +108,7 @@ This is my note
 
 It should return a 200 OK. Now the note has been saved to the filesystem. Now when you run the test again:
 
-```POST http://localhost:8081/tests/co.cantina.junit.http.example.ExampleTest/noteSaved HTTP/1.1``` 
+```POST http://localhost:8081/tests/io.dfox.junit.http.example.ExampleTest/noteSaved HTTP/1.1``` 
 
 You will get a 200 response with the following content:
 
@@ -117,7 +117,7 @@ You will get a 200 response with the following content:
   "results": [
     {
       "type": "success",
-      "grouping": "co.cantina.junit.http.example.ExampleTest",
+      "grouping": "io.dfox.junit.http.example.ExampleTest",
       "name": "noteSaved"
     }
   ],
@@ -176,7 +176,7 @@ Sometimes, you will need to alter some state or do something on the server in-be
 
 You can run the example one like this:
 
-```POST http://localhost:8081/fixtures/co.cantina.junit.http.example.ExampleTest/createNote HTTP/1.1``` 
+```POST http://localhost:8081/fixtures/io.dfox.junit.http.example.ExampleTest/createNote HTTP/1.1``` 
 
 This will create a note on the server, so you can get it with:
 

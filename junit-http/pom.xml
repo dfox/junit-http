@@ -4,7 +4,7 @@
 
     <parent>
         <artifactId>junit-http-all</artifactId>
-        <groupId>co.cantina</groupId>
+        <groupId>io.dfox</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -82,7 +82,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <exclude>co.cantina.junit.http.examples.*</exclude>
+                        <exclude>io.dfox.junit.http.examples.*</exclude>
                     </excludes>
                 </configuration>
             </plugin>

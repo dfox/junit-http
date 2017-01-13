@@ -1,6 +1,8 @@
 # junit-http
 A small HTTP servlet for executing JUnit tests from the web
 
+This library is part of the tools available on https://graybox-testing.org. See that site for more information.
+
 ## Why?
 When doing functional testing via the UI, it's sometimes not possible to validate side effects that occur in backend systems. This little servlet allows the UI test to make a simple HTTP request to execute a test on the backend, which has full access to the systems where the side effects are performed. This is often referred to as "gray box testing". 
 

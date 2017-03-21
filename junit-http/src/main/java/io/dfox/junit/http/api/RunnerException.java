@@ -16,7 +16,7 @@
 package io.dfox.junit.http.api;
 
 /**
- * A RunnerException is thrown when a {@link io.dfox.junit.http.JUnitHttpRunner} has an 
+ * A RunnerException is thrown when a {@link io.dfox.junit.http.Runner} has an 
  * error running a test (unrelated to errors in the test), or when a runner can't be created
  * because the test class is not valid.
  */

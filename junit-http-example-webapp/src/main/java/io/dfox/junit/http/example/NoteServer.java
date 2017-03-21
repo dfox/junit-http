@@ -20,8 +20,6 @@ import java.io.IOException;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ratpack.handling.Context;
-import ratpack.path.PathBinding;
 import ratpack.server.RatpackServer;
 
 public class NoteServer {
@@ -35,17 +33,6 @@ public class NoteServer {
     private static final NoteRepository REPOSITORY = new NoteRepository(TEMP_DIR);
     private static final int PORT = 8080;
         
-    /**
-     * Get the path past the current binding.
-     * 
-     * @param context The context
-     * @return The path
-     */
-    private static String getPastBinding(final Context context) {
-        PathBinding binding = context.getPathBinding();
-        return binding.getPastBinding();
-    }
-    
     public static void main(final String ... args) throws Exception {
         REPOSITORY.init();
         

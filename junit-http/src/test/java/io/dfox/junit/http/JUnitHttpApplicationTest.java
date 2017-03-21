@@ -42,11 +42,11 @@ import org.junit.Test;
 
 public class JUnitHttpApplicationTest {
     
-    private JUnitHttpApplication application = new JUnitHttpApplication();
+    private Service application = new Service();
     
     @Before
     public void setUp() {
-        application = new JUnitHttpApplication();
+        application = new Service();
     }
     
     @After
@@ -168,8 +168,8 @@ public class JUnitHttpApplicationTest {
     @Test
     public void runnerIsCached() {
         Path path = new Path(ExampleTest.class.getName());
-        JUnitHttpRunner runnerA = application.getRunner(path);
-        JUnitHttpRunner runnerB = application.getRunner(path);
+        Runner runnerA = application.getRunner(path);
+        Runner runnerB = application.getRunner(path);
         
         assertSame(runnerA, runnerB);
     }

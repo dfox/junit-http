@@ -37,9 +37,9 @@ import org.junit.runners.model.InitializationError;
 import io.dfox.junit.http.api.Error;
 
 /**
- * JUnitHttpRunner runs JUnit tests and converts the result to the HTTP API model.
+ * Runner runs JUnit tests and converts the result to the HTTP API model.
  */
-public class JUnitHttpRunner extends BlockJUnit4ClassRunner {
+public class Runner extends BlockJUnit4ClassRunner {
     
     private final ImmutableMap<Path, FrameworkMethod> testMethods;
     private final ImmutableMap<Path, FrameworkMethod> fixtureMethods;
@@ -51,7 +51,7 @@ public class JUnitHttpRunner extends BlockJUnit4ClassRunner {
      * 
      * @throws InitializationError If the runner cannot be initialized
      */
-    public JUnitHttpRunner(final Class<?> testClass) throws InitializationError {
+    public Runner(final Class<?> testClass) throws InitializationError {
         super(testClass);
 
         testMethods = getChildren()

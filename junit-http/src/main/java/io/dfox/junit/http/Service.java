@@ -30,20 +30,20 @@ import java.util.function.BiFunction;
 import org.junit.runners.model.InitializationError;
 
 /**
- * JUnitHttpApplication is the main application class for JUnit HTTP.
+ * Service is the main service class for JUnit HTTP.
  */
-public class JUnitHttpApplication {
+public class Service {
 
-    private final Map<String, JUnitHttpRunner> runners = new HashMap<>();
-
+    private final Map<String, Runner> runners = new HashMap<>();
+    
     /**
-     * Run the {@link io.dfox.junit.http.JUnitHttpRunner#invokeAfterClassMethods() } for every
+     * Run the {@link io.dfox.junit.http.Runner#invokeAfterClassMethods() } for every
      * cached runner.
      *
      * @throws RunnerException If any of the test's @AfterClass methods throws an exception
      */
     public void destroy() throws RunnerException {
-        runners.values().stream().forEach(JUnitHttpRunner::invokeAfterClassMethods);
+        runners.values().stream().forEach(Runner::invokeAfterClassMethods);
     }
 
     /**
@@ -57,15 +57,15 @@ public class JUnitHttpApplication {
      * grouping)
      * @throws RunnerException If the runner could not be created
      */
-    public synchronized JUnitHttpRunner getRunner(final Path testPath)
+    public synchronized Runner getRunner(final Path testPath)
         throws MethodNotFoundException, RunnerException {
 
         try {
             final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            final JUnitHttpRunner runner = runners.get(testPath.getGrouping());
+            final Runner runner = runners.get(testPath.getGrouping());
             if (runner == null) {
                 final Class<?> testClass = Class.forName(testPath.getGrouping(), true, classLoader);
-                final JUnitHttpRunner newRunner = new JUnitHttpRunner(testClass);
+                final Runner newRunner = new Runner(testClass);
                 newRunner.invokeBeforeClassMethods();
                 runners.put(testPath.getGrouping(), newRunner);
                 return newRunner;
@@ -104,14 +104,14 @@ public class JUnitHttpApplication {
      * @return The runner Summary
      * @throws InvalidPathException If the path is invalid
      */
-    private Summary run(final String path, final BiFunction<JUnitHttpRunner, Path, Summary> func)
+    private Summary run(final String path, final BiFunction<Runner, Path, Summary> func)
         throws InvalidPathException {
 
         final Optional<Path> maybePath = Path.parse(path);
 
         if (maybePath.isPresent()) {
             Path testPath = maybePath.get();
-            final JUnitHttpRunner runner = getRunner(testPath);
+            final Runner runner = getRunner(testPath);
             return func.apply(runner, testPath);
         }
         else {

@@ -15,21 +15,19 @@
  */
 package io.dfox.junit.http.example;
 
-import io.dfox.junit.http.Fixture;
 import com.fasterxml.jackson.databind.JsonNode;
+import io.dfox.junit.http.Fixture;
+import static io.dfox.junit.http.util.TestUtils.getTestData;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Optional;
-import org.apache.commons.io.IOUtils;
 import org.junit.AfterClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.BeforeClass;
-import static io.dfox.junit.http.util.TestUtils.getTestData;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * Example tests which can be used to demonstrate the servlet.
@@ -38,20 +36,19 @@ public class ExampleTest {
 
     private static NoteRepository repository;
 
-
-
     @BeforeClass
     public static void setUp() throws IOException {
         final File tempDir = new File("/tmp", NoteRepository.class.getName());
         repository = new NoteRepository(tempDir);
         repository.init();
 
-        JsonNode notesFixture = getTestData("notes.json");
+        Optional<JsonNode> maybeNotesFixture = getTestData("notes.json");
+        JsonNode notesFixture = maybeNotesFixture.orElseThrow(() -> new RuntimeException("Missing notes fixture"));
         JsonNode noteFixture = notesFixture.path("load");
         String name = noteFixture.path("name").asText();
         String contents = noteFixture.path("contents").asText();
 
-        repository.saveNote(name, IOUtils.toInputStream(contents));
+        repository.saveNote(name, contents);
     }
 
     @AfterClass
@@ -61,12 +58,13 @@ public class ExampleTest {
 
     @Fixture
     public void createNote() throws IOException {
-        JsonNode notesFixture = getTestData("notes.json");
+        Optional<JsonNode> maybeNotesFixture = getTestData("notes.json");
+        JsonNode notesFixture = maybeNotesFixture.get();
         JsonNode noteFixture = notesFixture.path("fixture");
         String name = noteFixture.path("name").asText();
         String contents = noteFixture.path("contents").asText();
 
-        repository.saveNote(name, IOUtils.toInputStream(contents));
+        repository.saveNote(name, contents);
     }
 
     @Fixture
@@ -75,17 +73,16 @@ public class ExampleTest {
     }
 
     private void assertNoteExists(final String notePath) throws IOException {
-        JsonNode notesFixture = getTestData("notes.json");
+        Optional<JsonNode> maybeNotesFixture = getTestData("notes.json");
+        JsonNode notesFixture = maybeNotesFixture.get();
         JsonNode noteFixture = notesFixture.path(notePath);
         String name = noteFixture.path("name").asText();
         String expectedContents = noteFixture.path("contents").asText();
 
-        Optional<InputStream> note = repository.getNote(name);
+        Optional<String> note = repository.getNote(name);
         assertTrue(note.isPresent());
-        try(InputStream stream = note.get()){
-            String contents = IOUtils.toString(stream);
-            assertEquals(expectedContents, contents);
-        }
+        String contents = note.get();
+        assertEquals(expectedContents, contents);
     }
 
     @Test

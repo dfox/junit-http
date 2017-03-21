@@ -17,10 +17,8 @@ package io.dfox.junit.http.example;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Optional;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 
 public class NoteRepository {
     
@@ -40,19 +38,19 @@ public class NoteRepository {
         FileUtils.deleteDirectory(dir);
     }
     
-    public synchronized Optional<InputStream> getNote(final String name) throws IOException {
+    public synchronized Optional<String> getNote(final String name) throws IOException {
         File note = new File(dir, name);
         if (note.exists()) {
-            return Optional.of(IOUtils.toBufferedInputStream(FileUtils.openInputStream(note)));
+            return Optional.of(FileUtils.readFileToString(note));
         }
         else {
             return Optional.empty();
         }
     }
     
-    public synchronized void saveNote(final String name, final InputStream contents) 
+    public synchronized void saveNote(final String name, final String contents) 
         throws IOException {
         File note = new File(dir, name);
-        FileUtils.copyInputStreamToFile(contents, note);
+        FileUtils.writeStringToFile(note, contents);
     }
 }

@@ -15,29 +15,30 @@
  */
 package io.dfox.junit.http;
 
-import io.dfox.junit.http.api.InvalidPathException;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.dfox.junit.http.api.Failure;
 import io.dfox.junit.http.api.Ignored;
-import io.dfox.junit.http.examples.ExampleNonTest;
-import io.dfox.junit.http.examples.ExampleTest;
+import io.dfox.junit.http.api.InvalidPathException;
 import io.dfox.junit.http.api.MethodNotFoundException;
 import io.dfox.junit.http.api.Path;
 import io.dfox.junit.http.api.Result;
-import io.dfox.junit.http.api.Summary;
 import io.dfox.junit.http.api.RunnerException;
 import io.dfox.junit.http.api.Success;
+import io.dfox.junit.http.api.Summary;
+import io.dfox.junit.http.examples.ExampleNonTest;
+import io.dfox.junit.http.examples.ExampleTest;
 import io.dfox.junit.http.examples.ExampleTestWithBadBeforeClass;
-import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
+import java.util.Optional;
 import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import org.junit.Before;
+import org.junit.Test;
 
 public class JUnitHttpApplicationTest {
     
@@ -214,10 +215,10 @@ public class JUnitHttpApplicationTest {
     
     @Test
     public void fixtureLoadsAndParses() throws IOException {
-        JsonNode fixture = application.getData("notes.json");
+        Optional<JsonNode> fixture = application.getData("notes.json");
         
-        assertNotNull(fixture);
-        assertEquals("my-note", fixture.path("name").asText());
-        assertEquals("This is my note", fixture.path("contents").asText());
+        assertTrue(fixture.isPresent());
+        assertEquals("my-note", fixture.get().path("name").asText());
+        assertEquals("This is my note", fixture.get().path("contents").asText());
     }
 }

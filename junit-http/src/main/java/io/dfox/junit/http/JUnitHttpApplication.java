@@ -15,13 +15,13 @@
  */
 package io.dfox.junit.http;
 
-import io.dfox.junit.http.api.MethodNotFoundException;
-import io.dfox.junit.http.api.InvalidPathException;
-import io.dfox.junit.http.api.RunnerException;
-import io.dfox.junit.http.util.TestUtils;
-import io.dfox.junit.http.api.Path;
-import io.dfox.junit.http.api.Summary;
 import com.fasterxml.jackson.databind.JsonNode;
+import io.dfox.junit.http.api.InvalidPathException;
+import io.dfox.junit.http.api.MethodNotFoundException;
+import io.dfox.junit.http.api.Path;
+import io.dfox.junit.http.api.RunnerException;
+import io.dfox.junit.http.api.Summary;
+import io.dfox.junit.http.util.TestUtils;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -92,7 +92,7 @@ public class JUnitHttpApplication {
      * @return The fixture as a JsonNode
      * @throws IOException If the fixture could not be loaded
      */
-    public JsonNode getData(final String path) throws IOException {
+    public Optional<JsonNode> getData(final String path) throws IOException {
         return TestUtils.getTestData(path);
     }
 
@@ -104,7 +104,7 @@ public class JUnitHttpApplication {
      * @return The runner Summary
      * @throws InvalidPathException If the path is invalid
      */
-    public Summary run(final String path, final BiFunction<JUnitHttpRunner, Path, Summary> func)
+    private Summary run(final String path, final BiFunction<JUnitHttpRunner, Path, Summary> func)
         throws InvalidPathException {
 
         final Optional<Path> maybePath = Path.parse(path);

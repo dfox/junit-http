@@ -55,14 +55,14 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>3.1.0</version>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.1.8</version>
             </dependency>
             <dependency>
-                <groupId>javax.servlet.jsp</groupId>
-                <artifactId>javax.servlet.jsp-api</artifactId>
-                <version>2.3.1</version>
+                <groupId>io.ratpack</groupId>
+                <artifactId>ratpack-core</artifactId>
+                <version>1.4.5</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
@@ -88,11 +88,6 @@
                 <groupId>commons-lang</groupId>
                 <artifactId>commons-lang</artifactId>
                 <version>2.6</version>
-            </dependency>
-            <dependency>
-                <groupId>com.mockrunner</groupId>
-                <artifactId>mockrunner-servlet</artifactId>
-                <version>1.1.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

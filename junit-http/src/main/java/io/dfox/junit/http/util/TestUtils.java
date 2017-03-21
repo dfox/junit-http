@@ -22,6 +22,7 @@ import com.google.common.collect.ImmutableList;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * TestUtils provides a set of utility methods which can be used in tests. They are also used
@@ -66,22 +67,22 @@ public class TestUtils {
      * @return The fixture as a parsed JsonNode
      * @throws IOException If the fixture cannot be loaded.
      */
-    public static JsonNode getTestData(final String path) throws IOException {
+    public static Optional<JsonNode> getTestData(final String path) throws IOException {
         String fullPath = DATA_DIR + "/" + path;
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         try (final InputStream stream = classLoader.getResourceAsStream(fullPath)) {
             if (stream == null) {
                 try (final InputStream stream2 = TestUtils.class.getResourceAsStream(fullPath)) {
                     if (stream2 == null) {
-                        return null;
+                        return Optional.empty();
                     }
                     else {
-                        return JSON_MAPPER.readTree(stream2);
+                        return Optional.of(JSON_MAPPER.readTree(stream2));
                     }
                 }
             }
             else {
-                return JSON_MAPPER.readTree(stream);
+                return Optional.of(JSON_MAPPER.readTree(stream));
             }
         }
     }

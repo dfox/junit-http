@@ -18,9 +18,7 @@ package io.dfox.junit.example;
 import io.dfox.junit.http.example.NoteRepository;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Optional;
-import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Assert;
 import static org.junit.Assert.assertFalse;
@@ -52,15 +50,11 @@ public class NoteRepositoryTest {
         
         assertFalse(repository.getNote(name).isPresent());
         
-        try(InputStream contentsStream = IOUtils.toInputStream(contents)) {
-            repository.saveNote(name, contentsStream);
-        }
+        repository.saveNote(name, contents);
         
-        Optional<InputStream> note = repository.getNote(name);
+        Optional<String> note = repository.getNote(name);
         assertTrue(note.isPresent());
-        try(InputStream stream = note.get()){
-            String savedContents = IOUtils.toString(stream);
-            Assert.assertEquals(contents, savedContents);
-        }
+        String savedContents = note.get();
+        Assert.assertEquals(contents, savedContents);
     }
 }
